@@ -43,7 +43,7 @@ class TSO:
         if pairing is None:
             pairing = []
         self.values = values
-        if [i for i in operators.values() if callable(i)]:
+        if [i for i in operators.values() if not callable(i)]:
             raise TypeError(f"The value in parameter operators is not callable")
         self.__operators = operators
         self.__pairing = pairing

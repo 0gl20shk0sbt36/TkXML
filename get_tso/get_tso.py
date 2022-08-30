@@ -60,7 +60,7 @@ key: values    {i}""")
         n = read_file(path)
         start_call((self.locale_, values))
         for i in [i.lstrip(' ') for i in n.split('\n') if i.lstrip(' ')]:
-            operators[i[0]]((self.locale_, values), i[1:])
+            operators.get(i[0], pass_call)((self.locale_, values), i[1:])
         end_call((self.locale_, values))
 
     def format_checker(self, string: str):
@@ -82,6 +82,6 @@ key: values    {i}""")
         self.start_call((self.values, self.locale_))
         n, n_ = self.format_checker(n)
         for i in n_:
-            self.__operators[i[0]]((self.values, self.locale_), i[1:])
+            self.__operators[i[0]]((self.values, self.locale_), i[1:].lstrip(' '))
         self.end_call((self.values, self.locale_))
         self.locale_ = {}

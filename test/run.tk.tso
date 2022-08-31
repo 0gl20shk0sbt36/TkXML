@@ -1,0 +1,2 @@
+>get_win_text_change win_text get_values set_values win_ln_col
+@bind_tab win_text

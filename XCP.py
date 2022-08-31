@@ -38,6 +38,14 @@ class AllocationIterator:
     def __init__(self, queue, path):
         self.queue = queue
         self.path_num = len(path)
+        self.end = False
+        self.del_ = False
+
+    def __del__(self):
+        self.del_ = True
+        if not self.end:
+            while not self.end:
+                self.__next__()
 
     def __iter__(self):
         self.path = []
@@ -57,7 +65,12 @@ class AllocationIterator:
                     self.content[len(n[1][self.path_num:]) - 1] += n[2]
             elif n[0] == 'end':
                 if len(self.path):
-                    return self.path.pop(), self.argv.pop(), self.content.pop()
+                    path = self.path.copy()
+                    self.path.pop()
+                    return path, self.argv.pop(), self.content.pop()
+                self.end = True
+                if self.del_:
+                    return
                 raise StopIteration
 
 
@@ -87,7 +100,7 @@ class Allocation:
                     if n[2]['versions'] != '1.0':
                         raise
                 if n[1] in self.obj.__dict__.get('__yield__', []):
-                    getattr_all(self.obj, n[1])(AllocationIterator(self.queue, n[1]), **n[2])
+                    getattr_all(self.obj, n[1])(n[2], AllocationIterator(self.queue, n[1]))
                 else:
                     if n[1]:
                         tag.append(n[1])
@@ -100,10 +113,10 @@ class Allocation:
                 if not n[1]:
                     break
                 else:
-                    obg = getattr_all(self.obj, n[1])
-                    if callable(obg):
+                    obj = getattr_all(self.obj, n[1])
+                    if callable(obj):
                         tag.pop()
-                        obg([content.pop(), argv.pop()])
+                        obj([content.pop(), argv.pop()])
 
 
 class XCP:
@@ -116,5 +129,5 @@ class XCP:
         self.parser.setContentHandler(self.parser_class)
 
     def run(self, path):
-        Thread(target=self.parser.parse, args=(path,)).start()
+        Thread(target=self.parser.parse, args=(path,), daemon=True).start()
         self.allocation.main()

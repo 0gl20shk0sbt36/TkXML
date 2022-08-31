@@ -1,22 +1,38 @@
 import ttkbootstrap as tk
 
 
-class UI:
+class Label(tk.Label):
 
-    def __init__(self,
-                 title: str = "tk",
-                 size=None,
-                 iconphoto: str = None,
-                 position=None,
-                 minsize=None,
-                 maxsize=None,
-                 themename: str = "litera",
-                 resizable=None,
-                 hdpi: bool = True,
-                 scaling: float = None,
-                 transient=None,
-                 overrideredirect: bool = False,
-                 alpha: float = 1.0):
+    def __init__(self, master=None, **kw):
+        super().__init__(master, **kw)
+
+
+class Text(tk.Text):
+
+    def __init__(self, *args, tab_=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.config(font='新宋体')
+        self.tab_ = None
+        self.bind_tab(tab_)
+
+    def bind_tab(self, tab_=None):
+        self.unbind('<Tab>')
+        if tab_ is not None:
+            if isinstance(tab_, int):
+                tab_ = ' ' * tab_
+            self.tab_ = tab_
+            self.bind('<Tab>', self.tab)
+
+    def tab(self, e):
+        self.insert(tk.INSERT, self.tab_)
+        return 'break'
+
+
+class Window(tk.Window):
+
+    def __init__(self, title: str = "tk", size=None, iconphoto: str = None, position=None, minsize=None, maxsize=None,
+                 themename: str = "litera", resizable=None, hdpi: bool = True, scaling: float = None, transient=None,
+                 overrideredirect: bool = False, alpha: float = 1.0):
         """
 
         :param title: 窗口标题
@@ -33,41 +49,13 @@ class UI:
         :param overrideredirect: 是否隐藏边框
         :param alpha: 窗口设置透明度(0~1.0)
         """
-        self.win = tk.Window(title, themename, iconphoto, size, position, minsize, maxsize, resizable,
-                             hdpi, scaling, transient, overrideredirect, alpha)
-        self.values = {}
-
-    def add_values(self, *value, **values):
-        if len(value) == 1 and isinstance(value[0], dict):
-            self.values.update(value[0])
-        elif len(value) == 2 and isinstance(value[0], str):
-            self.values[value[0]] = value[1]
-        elif values:
-            self.values.update(values)
-        else:
-            raise ValueError()
-
-    def iconphoto(self, path):
-        self.win.iconphoto(True, tk.PhotoImage(file=path))
-
-    def iconbitmap(self, path):
-        self.win.iconbitmap(path)
-
-    def title(self, string: str):
-        """设置窗口标题
-
-        :param string: 标题
-        :return:
-        """
-        self.win.title(string)
-
-    def geometry(self, new_geometry: str):
-        self.win.geometry(new_geometry)
-
-    def mainloop(self):
-        self.win.mainloop()
+        super().__init__(title, themename, iconphoto, size, position, minsize, maxsize, resizable, hdpi, scaling,
+                         transient, overrideredirect, alpha)
 
 
 if __name__ == '__main__':
-    ui = UI(iconphoto='logo.ico')
-    ui.mainloop()
+    win = Window()
+    win.iconbitmap('test\\logo.ico')
+    t = Text(win, undo=True, tab_blans=4)
+    t.pack()
+    win.mainloop()

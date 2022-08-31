@@ -1,0 +1,60 @@
+#coding="gbk"
+>文件
+    %Ctrl+N
+    &new win win_text path change default_title set_values
+    @新建
+
+    >打开
+        @打开最近
+        @从磁盘中读取
+    <
+    /
+    %Ctrl+S
+    &save win win_text path set_values
+    @保存
+
+    %Ctrl+Shift+S
+    &save_as win win_text set_values
+    @另存为
+
+    /
+
+    %Ctrl+Q
+    &quit win set_values
+    @退出
+<
+>编辑
+    %Ctrl+Z
+    &undo win_text
+    @撤销
+
+    %Ctrl+Shift+Z
+    &redo win_text
+    @重做
+
+    /
+
+    % Ctrl+X
+    & cut win_text
+    @ 剪切
+
+    % Ctrl+C
+    & copy win_text
+    @ 复制
+
+    $ Ctrl+V
+    & paste win_text
+    @ 粘贴
+
+    $ Ctrl+A
+    & select_all win_text
+    @ 全选
+
+    /
+    @ 查找
+<
+>格式化
+    % Ctrl+Shift+?
+    & comment win_text
+    @ 注释/取消注释
+<

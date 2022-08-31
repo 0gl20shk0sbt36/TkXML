@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<tkinter versions="1.0">
+    <head>
+        <title>第一个tk窗口</title>
+        <size>480x360</size>
+        <ico>logo.ico</ico>
+        <logic>logic</logic>
+        <end_run>run.tk.tso</end_run>
+    </head>
+    <body>
+        <menubar name="menubar">
+            <menubar_info path="menubar.tk_ui.tso"/>
+        </menubar>
+        <label name="">
+
+        </label>
+        <text name="win_text">
+            <args>
+                <font>新宋体</font>
+                <tab_>4</tab_>
+            </args>
+        </text>
+    </body>
+</tkinter>
